@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kosty\\source\\repos\\DotaLauncher\\DotaLauncher.csproj": {}
+    "C:\\Users\\kosty\\source\\repos\\DotaAssist\\DotaLauncher.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kosty\\source\\repos\\DotaLauncher\\DotaLauncher.csproj": {
+    "C:\\Users\\kosty\\source\\repos\\DotaAssist\\DotaLauncher.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kosty\\source\\repos\\DotaLauncher\\DotaLauncher.csproj",
+        "projectUniqueName": "C:\\Users\\kosty\\source\\repos\\DotaAssist\\DotaLauncher.csproj",
         "projectName": "DotaLauncher",
-        "projectPath": "C:\\Users\\kosty\\source\\repos\\DotaLauncher\\DotaLauncher.csproj",
+        "projectPath": "C:\\Users\\kosty\\source\\repos\\DotaAssist\\DotaLauncher.csproj",
         "packagesPath": "C:\\Users\\kosty\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kosty\\source\\repos\\DotaLauncher\\obj\\",
+        "outputPath": "C:\\Users\\kosty\\source\\repos\\DotaAssist\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\components\\NuGetPackages"

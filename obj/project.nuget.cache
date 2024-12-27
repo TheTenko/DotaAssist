@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "brIgq/HMXcI=",
+  "dgSpecHash": "fUbAG1BaCxE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kosty\\source\\repos\\DotaLauncher\\DotaLauncher.csproj",
+  "projectFilePath": "C:\\Users\\kosty\\source\\repos\\DotaAssist\\DotaLauncher.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kosty\\.nuget\\packages\\dota2gsi\\2.1.1.8897\\dota2gsi.2.1.1.8897.nupkg.sha512",
     "C:\\Users\\kosty\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
