@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "BhESu+1i/6I=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\kosty\\source\\repos\\overDota\\overDota\\DotaLauncher\\DotaLauncher.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\kosty\\.nuget\\packages\\dota2gsi\\2.1.1.8897\\dota2gsi.2.1.1.8897.nupkg.sha512",
+    "C:\\Users\\kosty\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\kosty\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\kosty\\.nuget\\packages\\system.data.datasetextensions\\4.5.0\\system.data.datasetextensions.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
