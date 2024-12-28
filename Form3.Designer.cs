@@ -47,7 +47,7 @@
             notificationSet.Name = "notificationSet";
             notificationSet.Size = new Size(157, 19);
             notificationSet.TabIndex = 0;
-            notificationSet.Text = "Включить уведомления";
+            notificationSet.Text = "Отключить уведомления";
             notificationSet.UseVisualStyleBackColor = true;
             notificationSet.CheckedChanged += notificationSet_CheckedChanged;
             // 
