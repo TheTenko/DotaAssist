@@ -12,7 +12,8 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace DotaLauncher
 {
-    public partial class Form1 : Form
+    
+    public partial class DotaAssistant : Form
     {
         // GSI
         static GameStateListener gsl;
@@ -22,7 +23,25 @@ namespace DotaLauncher
         private Timer updateTimer;
         bool roshanAlive = true;
 
-        public Form1()
+        string lvl = "Ваш уровень - ";
+        string roshan = "Рошан ";
+        string wisdom = "Время до руны мудрости - ";
+        string active = "Время до рун на реке - ";
+        string bounty = "Время до руны богатства - ";
+        string time = "Игровое время - ";
+        string neutral = "Уровень нейтральных предметов - ";
+        string networth = "Нетворс - ";
+
+        private static bool showRoshanTimer = true;
+        private static bool showBountyRuneTimers = true;
+        private static bool showMiddleRuneTimers = true;
+        private static bool showGameTime = true;
+        private static bool showWisdomTime = true;
+        private static bool showHeroLevel = true;
+        private static bool showNetworth = true;
+        private static bool showNeutral = true;
+
+        public DotaAssistant()
         {
             // Listener
             gsl = new GameStateListener(4000);
@@ -38,102 +57,125 @@ namespace DotaLauncher
             MessageBox.Show("Программа работает, можете запускать Dota 2");
 
             gsl.NewGameState += OnNewGameState;
+            this.FormClosing += Overlay_FormClosing;
             InitializeComponent();
+        }
+        private void Overlay_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Отменяем закрытие окна
+            e.Cancel = true;
+            
+            // Скрываем окно
+            this.Hide();
         }
         public async void OnNewGameState(GameState gs)
         {
-            string lvl = "Ваш уровень - ";
-            string roshan = "Рошан ";
-            string wisdom = "Время до руны мудрости - ";
-            string active = "Время до рун на реке - ";
-            string bounty = "Время до руны богатства - ";
-            string time = "Игровое время - ";
-            string neutral = "Уровень нейтральных предметов - ";
-            string networth = "Нетворс - ";
-
-
+            int mMinutes = 0;
+            int mSeconds = 0;
+            int bMinutes = 0;
+            int bSeconds = 0;
+            int wMinutes = 0;
+            int wSeconds = 0;
             // Networth
-            /*int net = gs.Player.LocalPlayer.GoldFromIncome +
-                gs.Player.LocalPlayer.GoldFromCreepKills +
-                gs.Player.LocalPlayer.GoldFromHeroKills +
-                gs.Player.LocalPlayer.ItemGoldSpent + 
-                gs.Player.LocalPlayer.GoldFromShared +
-                gs.Player.LocalPlayer.GoldReliable +
-                gs.Player.LocalPlayer.GoldUnreliable +
-                gs.Player.LocalPlayer.SupportGoldSpent +
-                gs.Player.LocalPlayer.ConsumableGoldSpent +
-                gs.Player.LocalPlayer.ItemGoldSpent +
-                600;*/
-            int net = gs.Hero.LocalPlayer.BuybackCost * 13 - 200 * 13;
-            networthLabel.Text = networth + net;
+            if (showNetworth)
+            {
+                int net = gs.Hero.LocalPlayer.BuybackCost * 13 - 200 * 13;
+                networthLabel.Text = networth + net;
+            }
+            else networthLabel.Text = "Вы выключили данную опцию";
 
             // Hero level
-            lvlLabel.Text = lvl + gs.Hero.LocalPlayer.Level;
+            if (showHeroLevel) lvlLabel.Text = lvl + gs.Hero.LocalPlayer.Level;
+            else lvlLabel.Text = "Вы выключили данную опцию";
 
             // Roshan Spawn
-            foreach (var game_event in gs.Events)
+            if (showRoshanTimer)
             {
-                if (game_event.EventType == Dota2GSI.Nodes.EventsProvider.EventType.Roshan_killed)
+                foreach (var game_event in gs.Events)
                 {
-                    roshanAlive = false;
-                    break;
-                }
+                    if (game_event.EventType == Dota2GSI.Nodes.EventsProvider.EventType.Roshan_killed)
+                    {
+                        roshanAlive = false;
+                        break;
+                    }
 
+                }
+                if (!roshanAlive)
+                {
+                    roshanKillTime = DateTime.Now;
+                    DateTime SpawnTime = roshanKillTime + SpawnDelay;
+                    updateTimer.Start();
+                }
             }
-            if (!roshanAlive)
-            {
-                roshanKillTime = DateTime.Now;
-                DateTime SpawnTime = roshanKillTime + SpawnDelay;
-                updateTimer.Start();
-            }
+            else roshanLabel.Text = "Вы выключили данную опцию";
 
             // Neutral Items
-            if (gs.Map.ClockTime >= 60 * 17)
+            if (showNeutral)
             {
-                neutralLabel.Text = neutral + 2;
-                if (gs.Map.ClockTime >= 60 * 27)
+                if (gs.Map.ClockTime >= 60 * 17)
                 {
-                    neutralLabel.Text = neutral + 3;
-                    if (gs.Map.ClockTime >= 60 * 37)
+                    neutralLabel.Text = neutral + 2;
+                    if (gs.Map.ClockTime >= 60 * 27)
                     {
-                        neutralLabel.Text = neutral + 4;
-                        if (gs.Map.ClockTime >= 60 * 60)
+                        neutralLabel.Text = neutral + 3;
+                        if (gs.Map.ClockTime >= 60 * 37)
                         {
-                            neutralLabel.Text = neutral + 5;
+                            neutralLabel.Text = neutral + 4;
+                            if (gs.Map.ClockTime >= 60 * 60)
+                            {
+                                neutralLabel.Text = neutral + 5;
+                            }
                         }
                     }
                 }
+                else neutralLabel.Text = neutral + 1;
             }
-            else neutralLabel.Text = neutral + 1;
+            else neutralLabel.Text = "Вы выключили данную опцию";
 
             // Wisdom Runes
-            TimeSpan wisdomTime = TimeSpan.FromSeconds(Math.Max(0, 420 - (gs.Map.ClockTime % 420)));
-            int wMinutes = (int)wisdomTime.TotalMinutes;
-            int wSeconds = wisdomTime.Seconds;
-            if (wSeconds < 10) wisdomRuneLabel.Text = wisdom + wMinutes + ":0" + wSeconds;
-            else wisdomRuneLabel.Text = wisdom + wMinutes + ":" + wSeconds;
+            if (showWisdomTime)
+            {
+                TimeSpan wisdomTime = TimeSpan.FromSeconds(Math.Max(0, 420 - (gs.Map.ClockTime % 420)));
+                wMinutes = (int)wisdomTime.TotalMinutes;
+                wSeconds = wisdomTime.Seconds;
+                if (wSeconds < 10) wisdomRuneLabel.Text = wisdom + wMinutes + ":0" + wSeconds;
+                else wisdomRuneLabel.Text = wisdom + wMinutes + ":" + wSeconds;
+            }
+            else wisdomRuneLabel.Text = "Вы выключили данную опцию";
 
 
             // Middle Runes
-            TimeSpan middleTime = TimeSpan.FromSeconds(Math.Max(0, 120 - (gs.Map.ClockTime % 120)));
-            int mMinutes = (int)middleTime.TotalMinutes;
-            int mSeconds = middleTime.Seconds;
-            if (mSeconds < 10) activeRuneLabel.Text = active + mMinutes + ":0" + mSeconds;
-            else activeRuneLabel.Text = active + mMinutes + ":" + mSeconds;
+            if (showMiddleRuneTimers)
+            {
+                TimeSpan middleTime = TimeSpan.FromSeconds(Math.Max(0, 120 - (gs.Map.ClockTime % 120)));
+                mMinutes = (int)middleTime.TotalMinutes;
+                wSeconds = middleTime.Seconds;
+                if (mSeconds < 10) activeRuneLabel.Text = active + mMinutes + ":0" + mSeconds;
+                else activeRuneLabel.Text = active + mMinutes + ":" + mSeconds;
+            }
+            else activeRuneLabel.Text = "Вы выключили данную опцию";
 
             // Bounty Runes
-            TimeSpan bountyTime = TimeSpan.FromSeconds(Math.Max(0, 180 - (gs.Map.ClockTime % 180)));
-            int bMinutes = (int)bountyTime.TotalMinutes;
-            int bSeconds = bountyTime.Seconds;
-            if (bSeconds < 10) bountyRuneLabel.Text = bounty + bMinutes + ":0" + bSeconds;
-            else bountyRuneLabel.Text = bounty + bMinutes + ":" + bSeconds;
+            if (showBountyRuneTimers)
+            {
+                TimeSpan bountyTime = TimeSpan.FromSeconds(Math.Max(0, 180 - (gs.Map.ClockTime % 180)));
+                bMinutes = (int)bountyTime.TotalMinutes;
+                wSeconds = bountyTime.Seconds;
+                if (bSeconds < 10) bountyRuneLabel.Text = bounty + bMinutes + ":0" + bSeconds;
+                else bountyRuneLabel.Text = bounty + bMinutes + ":" + bSeconds;
+            }
+            else bountyRuneLabel.Text = "Вы выключили данную опцию";
 
             // Map Time
-            var ConvertTime = TimeSpan.FromSeconds(gs.Map.ClockTime);
-            int minutes = (int)ConvertTime.TotalMinutes;
-            int seconds = ConvertTime.Seconds;
-            if (seconds < 10) gameTimeLabel.Text = time + minutes + ":0" + seconds;
-            else gameTimeLabel.Text = time + minutes + ":" + seconds;
+            if (showGameTime)
+            {
+                var ConvertTime = TimeSpan.FromSeconds(gs.Map.ClockTime);
+                int minutes = (int)ConvertTime.TotalMinutes;
+                int seconds = ConvertTime.Seconds;
+                if (seconds < 10) gameTimeLabel.Text = time + minutes + ":0" + seconds;
+                else gameTimeLabel.Text = time + minutes + ":" + seconds;
+            }
+            else gameTimeLabel.Text = "Вы выключили данную опцию";
 
             // Notification
             if (mMinutes == 0 && mSeconds == 30)
@@ -153,6 +195,42 @@ namespace DotaLauncher
             }
         }
 
+        public static void SetRoshanTimerEnabled(bool enabled)
+        {
+            showRoshanTimer = enabled;
+        }
+        public static void SetBountyTimeEnabled(bool enabled)
+        {
+            showBountyRuneTimers = enabled;
+        }
+        public static void SetMiddleTimeEnabled(bool enabled)
+        {
+            showMiddleRuneTimers = enabled;
+        }
+        public static void SetGameTimeEnabled(bool enabled)
+        {
+            showGameTime = enabled;
+        }
+        public static void SetWisdomTimeEnabled(bool enabled)
+        {
+            showWisdomTime = enabled;
+        }
+        public static void SetHeroLevelEnabled(bool enabled)
+        {
+            showHeroLevel = enabled;
+        }
+        public static void SetNetworthEnabled(bool enabled)
+        {
+            showNetworth = enabled;
+        }
+        public static void SetNeutralEnabled(bool enabled)
+        {
+            showNeutral = enabled;
+        }
+
+
+        private static bool notificationsEnabled = true;
+        
         // Notification Class
         public class NotificationForm : Form
         {
@@ -161,6 +239,12 @@ namespace DotaLauncher
 
             public NotificationForm(string message, string soundPath = null)
             {
+                if (!notificationsEnabled)
+                {
+                    this.Close();
+                    return;
+                }
+
                 // Настройки окна
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.StartPosition = FormStartPosition.CenterScreen;
@@ -206,6 +290,7 @@ namespace DotaLauncher
                 closeTimer.Interval = 5000; // 3 секунды
                 closeTimer.Tick += CloseTimer_Tick;
                 closeTimer.Start();
+
             }
 
             private void CloseTimer_Tick(object sender, EventArgs e)
@@ -216,9 +301,16 @@ namespace DotaLauncher
 
             public static void ShowNotification(string message, string soundPath = null)
             {
-                // Запускаем уведомление в отдельном потоке
-                NotificationForm notification = new NotificationForm(message, soundPath);
-                notification.Show();
+                if (notificationsEnabled)  // Проверяем, разрешены ли уведомления
+                {
+                    // Запускаем уведомление в отдельном потоке
+                    NotificationForm notification = new NotificationForm(message, soundPath);
+                    notification.Show();
+                }
+            }
+            public static void SetNotificationsEnabled(bool enabled)
+            {
+                notificationsEnabled = enabled;
             }
         }
 
@@ -241,6 +333,10 @@ namespace DotaLauncher
                 NotificationForm.ShowNotification(message);
                 updateTimer.Stop();
             }
+        }
+        public static void SetNotificationsEnabled(bool enabled)
+        {
+            notificationsEnabled = enabled;
         }
     }
 }

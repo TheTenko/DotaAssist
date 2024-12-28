@@ -13,6 +13,14 @@
         },
         "runtime": {
           "DotaLauncher.dll": {}
+        },
+        "resources": {
+          "en/DotaLauncher.resources.dll": {
+            "locale": "en"
+          },
+          "ru-RU/DotaLauncher.resources.dll": {
+            "locale": "ru-RU"
+          }
         }
       },
       "Dota2GSI/2.1.1.8897": {

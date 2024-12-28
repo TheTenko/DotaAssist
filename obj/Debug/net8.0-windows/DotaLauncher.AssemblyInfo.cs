@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DotaLauncher")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db60cd5f15b49cb0103271e0cedee2b349cb6db0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8aaa8cc0fe05f2c82c280cedc411877d8e470560")]
 [assembly: System.Reflection.AssemblyProductAttribute("DotaLauncher")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DotaLauncher")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

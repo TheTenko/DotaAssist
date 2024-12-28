@@ -1,6 +1,6 @@
 ﻿namespace DotaLauncher
 {
-    partial class Form1
+    partial class DotaAssistant
     {
         /// <summary>
         ///  Required designer variable.
@@ -110,7 +110,7 @@
             networthLabel.TabIndex = 7;
             networthLabel.Text = "label2";
             // 
-            // Form1
+            // DotaAssistant
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -124,7 +124,7 @@
             Controls.Add(lvlLabel);
             Controls.Add(gameTimeLabel);
             MaximizeBox = false;
-            Name = "Form1";
+            Name = "DotaAssistant";
             Text = "Form1";
             TransparencyKey = Color.Transparent;
             ResumeLayout(false);
